@@ -4,9 +4,9 @@ Created on Sun Jun  6 15:00:35 2021
 
 @author: iseabrook1
 """
-#This script contains the functions required to assess the predictability of node 
-#changes from the node level metrics m_{a-c}, eigenvector centrality, pagerank, 
-#degree and community label.
+#This script contains the functions required to assess the predictability of  
+#subsequent node presence from the node level metrics m_{a-c},
+# eigenvector centrality, pagerank, degree and community label.
 
 #Isobel Seabrook, ucabeas@ucl.ac.uk
 #MIT License. Please reference below publication if used for research purposes.
