@@ -20,12 +20,13 @@ Created on Sun Jun  6 14:57:46 2021
 #   to produce static networks in the form of pandas edgelist dataframes.
 #
 #   The static networks can then be passed to netstats_generator, which generates
-#   a boolean indicator of change for each node based on its importance, and then 
-#   calculates the node level metrics m_{a-c}, eigenvector centrality, pagerank,
-#   degree, and community label. This can then be used as input in various functions
-#   in the modules 'node_importance_functions.py' and 'node_prediction.py' to 
-#   assess how these networks evolve over time and how node importance and other 
-#   node level metrics relate to the network evolution. 
+#   a boolean indicator of subsequent snapshot presence for each node based on 
+#   its importance, and then calculates the node level metrics m_{a-c}, 
+#   eigenvector centrality, pagerank, degree, and community label. 
+#   This can then be used as input in various functions in the modules
+#   'node_importance_functions.py' and 'node_prediction.py' to assess how these 
+#   networks evolve over time and how node importance and other node level metrics 
+#   relate to the network evolution. 
 
 import networkx as nx
 import node_importance_functions as nif
