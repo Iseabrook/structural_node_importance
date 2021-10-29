@@ -65,7 +65,7 @@ def mi_generator_symm_tests(data, node, test_type, weight=True, google_matrix=Fa
     #print(node)
     M = nx.from_pandas_edgelist(data, source="seller id", target = "buyer id",
                                 edge_attr = ['total_value'],
-                                create_using=nx.MultiDiGraph())
+                                create_using=nx.MultiGraph())
     if node in M.nodes():
         G = nx.Graph()#DiGraph if directed
         G.add_nodes_from(M)
@@ -171,7 +171,7 @@ def da_le_pairs_test(g_df, test_type='all', weight=True):
         variable: edge tuple
         log_delta_S_rel: natural log of delta_S_rel
     """
-    G = nx.from_pandas_edgelist(g_df, source="seller id", target = "buyer id",edge_attr = ['total_value'],create_using=nx.MultiDiGraph())
+    G = nx.from_pandas_edgelist(g_df, source="seller id", target = "buyer id",edge_attr = ['total_value'],create_using=nx.MultiGraph())
     monthly_values_list = [[] for i in range(10)]
     whole_graph_uni = multi_edge_to_uni(G)
     for node in whole_graph_uni.nodes():
@@ -232,7 +232,7 @@ def da_le_pairs_test(g_df, test_type='all', weight=True):
     return(ds_mi)
 
 
-def plot_boxplots_multimeasure(ds_mi, measure_columns = ["m_a", "m_b", "m_c", "m_d",'eig_cent','pagerank','degree', 'community']):
+def plot_violinplots_multimeasure(ds_mi, measure_columns = ["m_a", "m_b", "m_c", "m_d",'eig_cent','pagerank','degree', 'community']):
     """ Function to generate boxplots for the distributions
         of measure values for nodes which don't change in comparison
         to those that do. 
@@ -261,7 +261,7 @@ def plot_boxplots_multimeasure(ds_mi, measure_columns = ["m_a", "m_b", "m_c", "m
     p = ds_mi_melt.groupby('measure').apply(ttest)
     print(p)
     fig, axs=plt.subplots(1,1, figsize=(12,5))
-    sns.boxplot(x="measure", y="value", hue='Change indicator',  data=ds_mi_melt, ax=axs)
+    sns.violinplot(x="measure", y="value", hue='Change indicator',  data=ds_mi_melt, ax=axs)
     #axs.set_title(f'p-value = {p:.3e}')
     axs.set_xlabel("Change label")
     axs.set_ylabel("Measure value (Scaled)")
@@ -283,7 +283,7 @@ def plot_network_ev_rankings(raw_data, ds_mi):
     init_snapshot = raw_data[raw_data['trade date time']==min(raw_data['trade date time'])]
     init_snapshot["tuple_id"]=[(u, v) for u, v in zip(init_snapshot['buyer id'], init_snapshot['seller id'])]
     changing_nodes = pd.unique(raw_data[raw_data.change_bool==True][['buyer id', 'seller id']].values.ravel('K'))
-    g = nx.from_pandas_edgelist(init_snapshot, source="seller id", target = "buyer id",edge_attr = ['total_value'],create_using=nx.Graph())
+    g = nx.from_pandas_edgelist(init_snapshot, source="seller id", target = "buyer id",edge_attr = ['total_value'],create_using=nx.MultiGraph())
     A = nx.to_numpy_matrix(g, weight='total_value')
     #coloring the nodes according to eigenvalue localisation
     eigenvalues, eigvecs = np.linalg.eigh(A)
