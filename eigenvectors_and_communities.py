@@ -5,7 +5,8 @@ Created on Sun Jun  6 14:57:46 2021
 @author: iseabrook1
 """
 
-#This script contains the code required to 
+#This script contains the code required to run experiments to understand how different 
+#components of a network's eigenspectra are relevant to different features in the network, for a simple barbell network.
 
 #Isobel Seabrook, ucabeas@ucl.ac.uk
 #MIT License. Please reference below publication if used for research purposes.
