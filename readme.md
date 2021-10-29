@@ -6,12 +6,12 @@ Seabrook et al., Community aware evaluation of node importance
 ## Usage
 This repository contains four different python modules to produce the analysis shown
 in Seabrook et. al., Community aware evaluation of node importance:
-1. eigenvector_localisation.py
+1. eigenvectors_and_communities.py
 2. node_importance_functions.py
 3. node_prediction.py
 4. synthetic_networks.py
 
-eigenvector_localisation.py contains the code for experiments with a barbell network,
+eigenvectors_and_communities.py contains the code for experiments with a barbell network,
 looking at how the different components of the eigenspectrum localise to different
 communities in a network.
 
