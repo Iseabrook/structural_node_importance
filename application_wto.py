@@ -36,7 +36,7 @@ import seaborn as sns
 
 if __name__ == "__main__":
     
-    path_to_data = 'C:/Users/iseabrook1/OneDrive - Financial Conduct Authority/Network_analytics/PhD/Data/'
+    path_to_data = ''
     raw_data = pd.read_csv(path_to_data+'wto_data.csv')
     
     #select only financial services (SG), inter-country only (rather than 
