@@ -117,7 +117,54 @@ def pipeline_model(model,classifiers_dict, classifier_params_dict, preprocessor,
     print(scoring+':', grid.best_score_) 
     return(grid.best_params_, grid.best_score_)
 
+def train_test_split_sorted(X, y, test_size, dates):
+    """Splits X and y into train and test sets, with test set separated by most recent dates.
 
+    Example:
+    --------
+    >>> from sklearn import datasets
+
+    # Fake dataset:
+    >>> gen_data = datasets.make_classification(n_samples=10000, n_features=5)
+    >>> dates = np.array(pd.date_range('2016-01-01', periods=10000, freq='5min'))
+    >>> np.random.shuffle(dates)
+    >>> df = pd.DataFrame(gen_data[0])
+    >>> df['date'] = dates
+    >>> df['target'] = gen_data[1]
+
+    # Separate:
+    >>> X_train, X_test, y_train, y_test = train_test_split_sorted(df.drop('target', axis=1), df['target'], 0.33, df['date'])
+
+    >>> print('Length train set: {}'.format(len(y_train)))
+    Length train set: 8000
+    >>> print('Length test set: {}'.format(len(y_test)))
+    Length test set: 2000
+    >>> print('Last date in train set: {}'.format(X_train['date'].max()))
+    Last date in train set: 2016-01-28 18:35:00
+    >>> print('First date in test set: {}'.format(X_test['date'].min()))
+    First date in test set: 2016-01-28 18:40:00
+    """
+
+    n_test = ceil(test_size * len(X))
+
+    sorted_index = [x for _, x in sorted(zip(np.array(dates), np.arange(0, len(dates))), key=lambda pair: pair[0])]
+    train_idx = sorted_index[:-n_test]
+    test_idx = sorted_index[-n_test:]
+
+    if isinstance(X, (pd.Series, pd.DataFrame)):
+        X_train = X.iloc[train_idx]
+        X_test = X.iloc[test_idx]
+    else:
+        X_train = X[train_idx]
+        X_test = X[test_idx]
+    if isinstance(y, (pd.Series, pd.DataFrame)):
+        y_train = y.iloc[train_idx]
+        y_test = y.iloc[test_idx]
+    else:
+        y_train = y[train_idx]
+        y_test = y[test_idx]
+
+    return X_train, X_test, y_train, y_test
 
 def node_change_prediction(dataset, X,y):
     ''' Function to act as a wrapper to select, train and evaluate a classifier which predicts node 
@@ -139,13 +186,17 @@ def node_change_prediction(dataset, X,y):
     ord_cols = [] 
     cont_cols = X.columns
     bin_cols = []
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,\
-                                                        random_state=42,\
-                                                            stratify  = y)
-    X_train, X_val, y_train, y_val = train_test_split(X_train, y_train,\
-                                                      test_size=0.25,\
-                                                          random_state=42,\
-                                                              stratify = y_train)
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,\
+#                                                         random_state=42,\
+#                                                             stratify  = y)
+#     X_train, X_val, y_train, y_val = train_test_split(X_train, y_train,\
+#                                                       test_size=0.25,\
+#                                                           random_state=42,\
+#                                                               stratify = y_train)
+    X_train, X_test, y_train, y_test = train_test_split_sorted(X, y, test_size=0.2, dates = date)
+    X_train, X_val, y_train, y_val = train_test_split_sorted(X_train, y_train,\
+                                                      test_size=0.25, dates = date[:len(X_train)])
+
     ############### Step 2 - set up preprocessor and pipeline ################
     preprocessor = setup_preprocessor(cont_cols, cat_cols, ord_cols, bin_cols)
     classifiers_dict = {'rf':RandomForestClassifier(),
