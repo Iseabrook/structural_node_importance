@@ -74,7 +74,7 @@ if __name__ == "__main__":
     
     #run the node change prediction 
 
-    pred.node_change_prediction(ds_mi, X, y)
+    pred.node_change_prediction(ds_mi, X, y, date=ds_mi[ds_mi.change_bool==1]['trade date time'])
     
     #plot network with the nodes coloured by their eigenvalue ranking
     nif.plot_network_ev_rankings(raw_data, ds_mi)
