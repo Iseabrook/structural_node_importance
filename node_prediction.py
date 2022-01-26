@@ -166,7 +166,7 @@ def train_test_split_sorted(X, y, test_size, dates):
 
     return X_train, X_test, y_train, y_test
 
-def node_change_prediction(dataset, X,y):
+def node_change_prediction(dataset, X,y, date):
     ''' Function to act as a wrapper to select, train and evaluate a classifier which predicts node 
     level changes. Evaluation is done according to comparison of precision and 
     recall to the same metrics for a dummy classifier which randomly predicts changes
